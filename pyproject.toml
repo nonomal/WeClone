@@ -21,12 +21,13 @@ dependencies = [
 
 [tool.weclone]
 # 配置文件的版本号，当配置文件结构或重要默认值发生变化时，应增加此版本号
-config_version = "0.2.2"
+config_version = "0.2.21"
 
 # 配置文件更新日志
 config_changelog = """
 [0.2.1] - 2025-04-29 - 初始配置版本。
 [0.2.2] - 2025-05-01 - 增加llm清洗数据配置,blocked_words迁移到settings.jsonc统一配置文件。
+[0.2.21] - 2025-05-01 - 增加在线llm清洗数据配置，兼容openai风格接口。
 """
 
 [dependency-groups]
@@ -43,8 +44,12 @@ sparktts = [
   "torchaudio>=2.6.0",
   "tqdm>=4.66.5",
 ]
-main = ["llamafactory>=0.9.2", "openai==1.76.0", "vllm==0.8.2; platform_system == 'Linux'"]
-dev = ["pytest", "pyright", "ruff"]
+main = [
+  "llamafactory>=0.9.2",
+  "openai==1.76.0",
+  "vllm==0.8.2; platform_system == 'Linux'",
+]
+dev = ["pytest", "pytest-order", "pyright", "ruff"]
 
 [project.scripts]
 weclone-cli = "weclone.cli:cli"
@@ -115,3 +120,6 @@ lint.select = [
   "Q",     # flake8-quotes
 ]
 target-version = "py310"
+
+[tool.pytest.ini_options]
+addopts = "-x"

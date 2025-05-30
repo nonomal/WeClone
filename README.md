@@ -7,19 +7,22 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/xming521/WeClone?style=for-the-badge&logo=github&label=Stars&logoColor=white&color=ffda65)](https://github.com/xming521/WeClone/stargazers)
 [![GitHub release](https://img.shields.io/github/v/release/xming521/WeClone?style=for-the-badge&logo=github&label=Release&logoColor=white&color=06d094)](https://github.com/xming521/WeClone/releases)
-<a href="https://qm.qq.com/cgi-bin/qm/qr?k=wNdgbOVT6oFOJ2wlMLsolUXErW9ESLpk&jump_from=webapi&authKey=z/reOp6YLyvR4Tl2k2nYMsLoMC3w9/99ucgKMX0oRGlxDV/WbYnvq2QxODoIkfxn" target="_blank" style="text-decoration: none;">
-  <img src="https://img.shields.io/badge/QQ群-708067078-12B7F5?style=for-the-badge&logo=qq&logoColor=white" alt="WeClone①" title="WeClone①">
+<a href="https://qm.qq.com/cgi-bin/qm/qr?k=QXMsXJ_eqeabS0cck0PGjEMyKjcq7J5d&jump_from=webapi&authKey=KHdy31VbSxj34VQVwXtEOYVi1K7SND45vJcNnm1Z5iCCR6IbGiyWEs9UbPqFI8Jc" target="_blank" style="text-decoration: none;">
+  <img src="https://img.shields.io/badge/QQ群-650118277-12B7F5?style=for-the-badge&logo=qq&logoColor=white" alt="WeClone①" title="WeClone①">
 </a>
+[![Twitter](https://img.shields.io/badge/Twitter-@weclone567-000000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/weclone567)
 [![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/+JEdak4m0XEQ3NGNl)
 
 <a href="https://hellogithub.com/repository/12ab209b56cb4cfd885c8cfd4cfdd53e" target="_blank"><img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=12ab209b56cb4cfd885c8cfd4cfdd53e&claim_uid=RThlPDoGrFvdMY5" alt="Featured｜HelloGitHub" style="width: 150px; height: 28px;" /></a>
 <a href="https://trendshift.io/repositories/13759" target="_blank"><img src="https://trendshift.io/api/badge/repositories/13759" alt="xming521%2FWeClone | Trendshift" style="width: 220px; height: 50px;" /></a>
 <a href="https://deepwiki.com/xming521/WeClone"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"  style="width: 134px; height: 23px;margin-bottom: 3px;"></a>
 </div>
+
 <p align="center">
-  <a href="https://blog.051088.xyz/2025/05/14/WeClone-%E7%94%A8%E5%BE%AE%E4%BF%A1%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95%E6%89%93%E9%80%A0%E8%87%AA%E5%B7%B1%E7%9A%84AI%E6%95%B0%E5%AD%97%E5%88%86%E8%BA%AB/" target="_blank">
-    Windows部署指南
-  </a>
+  <a href="https://www.weclone.love/" target="_blank"> 项目主页 </a> ｜
+  <a href="https://www.weclone.love/what-is-weclone.html" target="_blank"> 项目文档 </a> ｜
+  <a href="https://blog.051088.xyz/2025/05/14/WeClone-%E7%94%A8%E5%BE%AE%E4%BF%A1%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95%E6%89%93%E9%80%A0%E8%87%AA%E5%B7%B1%E7%9A%84AI%E6%95%B0%E5%AD%97%E5%88%86%E8%BA%AB/" target="_blank">Windows部署指南</a> ｜
+  <a href="https://blog.051088.xyz/posts/weclone-linux-tutorial/" target="_blank"> Linux部署指南【保姆级】</a>
 </p>
 
 > [!IMPORTANT]
@@ -104,7 +107,8 @@ git clone https://www.modelscope.cn/Qwen/Qwen2.5-7B-Instruct.git
 weclone-cli make-dataset
 ```
 - 目前仅支持时间窗口策略，根据`single_combine_time_window`将单人连续消息通过逗号连接合并为一句，根据`qa_match_time_window`匹配问答对。
-- 可以启用`clean_dataset`中的`enable_clean`选项，对数据进行清洗，以达到更好效果。当前使用llm judge对聊天记录进行打分，使用vllm进行离线推理。在得到`llm打分分数分布情况`后，调整`accept_score`选择可以接受的分数，再适当降低`train_sft_args`的`lora_dropout`参数提升拟合效果。
+- 可以启用`clean_dataset`中的`enable_clean`选项，对数据进行清洗，以达到更好效果。* 当前系统支持使用 `llm judge` 对聊天记录进行打分，提供 **vllm 离线推理** 和 **API 在线推理** 两种方式。可通过将 `settings.jsonc` 文件中的 `"online_llm_clear": false` 修改为 `true` 来启用 API 在线推理模式，并配置相应的 `base_url`、`llm_api_key`、`model_name` 等参数。所有兼容 OpenAI 接口的模型均可接入。
+- 在获得 `llm 打分分数分布情况` 后，可通过设置 `accept_score` 参数筛选可接受的分数区间，同时可适当降低 `train_sft_args` 中的 `lora_dropout` 参数，以提升模型的拟合效果。
 
 ## 配置参数并微调模型
 
