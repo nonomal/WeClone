@@ -162,3 +162,6 @@ Qwen*/
 settings.jsonc
 settings.json
 dataset/blocked_words.json
+dataset/wechat/*
+dataset/media/*
+models/*
