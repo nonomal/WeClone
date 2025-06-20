@@ -1,28 +1,27 @@
 import json
+from typing import List, cast  # 导入 cast
+
 import openai
 from openai import OpenAI  # 导入 OpenAI 类
-
+from openai.types.chat import ChatCompletionMessageParam  # 导入消息参数类型
 from tqdm import tqdm
-from typing import List, Dict, cast # 导入 cast
-from openai.types.chat import ChatCompletionMessageParam # 导入消息参数类型
 
 from weclone.utils.config import load_config
+from weclone.utils.config_models import TestModelArgs, WCInferConfig
 
-config = load_config("web_demo")
+infer_config = cast(WCInferConfig, load_config("web_demo"))
+test_config = cast(TestModelArgs, load_config("test_model"))
 
-config = {
-    "default_prompt": config["default_system"],
+completion_config = {
+    "default_prompt": infer_config.default_system,
     "model": "gpt-3.5-turbo",
     "history_len": 15,
 }
 
-config = type("Config", (object,), config)()
+completion_config = type("Config", (object,), completion_config)()
 
 # 初始化 OpenAI 客户端
-client = OpenAI(
-    api_key="""sk-test""",
-    base_url="http://127.0.0.1:8005/v1"
-)
+client = OpenAI(api_key="""sk-test""", base_url="http://127.0.0.1:8005/v1")
 
 
 def handler_text(content: str, history: list, config):
@@ -37,26 +36,26 @@ def handler_text(content: str, history: list, config):
         typed_messages = cast(List[ChatCompletionMessageParam], messages)
         response = client.chat.completions.create(
             model=config.model,
-            messages=typed_messages, # 传递转换后的列表
-            max_tokens=50
+            messages=typed_messages,  # 传递转换后的列表
+            max_tokens=50,
         )
     except openai.APIError as e:
         history.pop()
         return "AI接口出错,请重试\n" + str(e)
 
-    resp = str(response.choices[0].message.content) # type: ignore
+    resp = str(response.choices[0].message.content)  # type: ignore
     resp = resp.replace("\n ", "")
     history.append({"role": "assistant", "content": resp})
     return resp
 
 
 def main():
-    test_list = json.loads(open("dataset/test_data.json", "r", encoding="utf-8").read())["questions"]
+    test_list = json.loads(open(test_config.test_data_path, "r", encoding="utf-8").read())["questions"]
     res = []
     for questions in tqdm(test_list, desc=" Testing..."):
         history = []
         for q in questions:
-            handler_text(q, history=history, config=config)
+            handler_text(q, history=history, config=completion_config)
         res.append(history)
 
     res_file = open("test_result-my.txt", "w")
